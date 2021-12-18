@@ -3,7 +3,7 @@
 ## Задание 1
 
 1. Список книг и авторов
-![image](https://user-images.githubusercontent.com/82168526/146250673-84ec30dd-8ec2-413f-821d-c114268b0464.png)
+![Screenshot_203](https://user-images.githubusercontent.com/91325950/146641563-9fb5eeb7-b619-4425-9a17-89493b986fd7.png)
 
 
 2. Обнаружим уязвимости:
@@ -12,69 +12,69 @@
 
 При вводе кода в фильтр выполнится скрипт:
 
-![image](https://user-images.githubusercontent.com/82168526/146250711-0c550137-9a09-4b69-a7e0-4dc1c3a68323.png)
+![Screenshot_205](https://user-images.githubusercontent.com/91325950/146641569-e865693e-d5bf-445f-b451-ccea1a7b17d6.png)
 
 2.2. Persisted (Stored) XSS
 
-![image](https://user-images.githubusercontent.com/82168526/146250754-e7447154-f5ac-410f-916b-4a4d174e01df.png)
+![Screenshot_206](https://user-images.githubusercontent.com/91325950/146641575-879818cc-9880-46fc-986a-097868224f08.png)
 
 Браузер интерпретирует введенный html, следовательно, внедряем JS:
 
-![image](https://user-images.githubusercontent.com/82168526/146250785-30cfe791-18a0-4d1d-b9ea-c2e297e01174.png)
+![Screenshot_209](https://user-images.githubusercontent.com/91325950/146641588-26b63473-55dd-4fed-8db9-0e5b3b8931d2.png)
 
-![image](https://user-images.githubusercontent.com/82168526/146250796-1f897a5f-c2f6-4ecd-ad97-8b3b50e98130.png)
+![Screenshot_210](https://user-images.githubusercontent.com/91325950/146641591-14fe17f7-cb4b-4c90-a759-29a521415c58.png)
 
 
 2.3. Cookie Injection
 
 Текст над фильтром отображает значение текущей cookie:
 
-![image](https://user-images.githubusercontent.com/82168526/146251002-0dde544b-1d89-4acf-8ca8-a57014278f7b.png)
+![Screenshot_211](https://user-images.githubusercontent.com/91325950/146641596-eefef6ab-ea7d-4f21-8e60-f8a6241b32db.png)
 
 И интерпретирует код:
 
-![image](https://user-images.githubusercontent.com/82168526/146251027-795240be-f356-4b11-b07f-1cbe28babb4f.png)
+![Screenshot_212](https://user-images.githubusercontent.com/91325950/146641603-483a16ec-4519-430a-aa15-0e8b73f673b1.png)
 
 2.4. Session hijacking
 
 Мы можем захватит сессию, похитив cookie:
 
 Reflected XSS:
-![image](https://user-images.githubusercontent.com/82168526/146251051-6a530b65-0913-4511-8ecd-d5a3634de3df.png)
+![Screenshot_213](https://user-images.githubusercontent.com/91325950/146641611-ed829ceb-c11d-405d-8c9d-49e7cf47bc47.png)
 Persisted (Stored) XSS:
-![image](https://user-images.githubusercontent.com/82168526/146251085-64388aeb-7fb1-452b-a1d7-f6c72549a920.png)
-![image](https://user-images.githubusercontent.com/82168526/146251100-6fc95f45-3cb2-43cd-b387-fd6ef4bd5964.png)
+![Screenshot_214](https://user-images.githubusercontent.com/91325950/146641621-d1df8a8b-cd46-433f-a858-97c5a0d9ef0b.png)
 Cookie Injection:
-![image](https://user-images.githubusercontent.com/82168526/146251120-e5db4aae-c5e3-416c-bb1d-145555386ca1.png)
+![Screenshot_215](https://user-images.githubusercontent.com/91325950/146641637-7c968cbf-d521-40e2-8eb4-c61de02914d6.png)
+
 
 3. Исправим уязвимости
 
 3.1. Session hijacking
 Для устранения уязвимости установим атрибут httpOnly:
 
-![image](https://user-images.githubusercontent.com/82168526/146251180-524c668e-f388-4c38-865c-8f6a925e8044.png)
+![Screenshot_216](https://user-images.githubusercontent.com/91325950/146641655-56143c07-afcc-4e4a-b1fd-b460e2a79f0a.png)
 
 Заметим, что внедренный код все еще выполняется, но у него нет доступа к cookie:
 
-![image](https://user-images.githubusercontent.com/82168526/146251196-8ff6ed7b-f559-496f-be3d-336ab6193a5b.png)
+![Screenshot_217](https://user-images.githubusercontent.com/91325950/146641663-42d925f8-7586-436f-9de3-bfbbc2f0b2a1.png)
 
 3.2. Persisted (Stored) XSS:
 Включим экранирование в шаблонизаторе pug:
 
-![image](https://user-images.githubusercontent.com/82168526/146251220-969f1cba-d812-47e6-8845-ad5e6ba996fb.png)
+![Screenshot_218](https://user-images.githubusercontent.com/91325950/146641666-b59aae8f-6cf5-4e52-9c61-d78c33361434.png)
 
 Теперь внедренный код не интерпретируется:
 
-![image](https://user-images.githubusercontent.com/82168526/146251281-a19bf1b3-c403-43fa-811d-43552f92f81d.png)
+![Screenshot_219](https://user-images.githubusercontent.com/91325950/146641680-4751391b-f375-4e5b-9aab-da474ff5eec5.png)
 
 3.3. Reflected XSS & Cookie Injection
 Добавим HTTP-заголовок Content-Security-Policy, в котором укажем безопасный источник загрузки скриптов:
 
-![image](https://user-images.githubusercontent.com/82168526/146251344-e52b63d6-5feb-4e5c-a8d6-4076ce7d6c2b.png)
+![Screenshot_220](https://user-images.githubusercontent.com/91325950/146641684-a8609c9b-ada7-429b-89a5-cdf822f1ee25.png)
 
 Данные уязвимости больше нельзя эксплуатировать:
 
 Reflected XSS
-![image](https://user-images.githubusercontent.com/82168526/146251362-78927821-0d98-4bde-a2b3-bfcc195db730.png)
+![Screenshot_221](https://user-images.githubusercontent.com/91325950/146641693-128b89da-5d79-4887-9a0b-4763c7f558e8.png)
 Cookie Injection
-![image](https://user-images.githubusercontent.com/82168526/146251374-7d91a958-f406-4d81-948d-7b8ef20f153b.png)
+![Screenshot_222](https://user-images.githubusercontent.com/91325950/146641695-02f8c52e-1759-444f-8acc-578491b59d53.png)
